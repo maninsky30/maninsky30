@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Store Inventory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .product-list {
+            margin-top: 20px;
+        }
+        .product {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Grocery Store Inventory</h2>
+        <input type="text" id="productName" placeholder="Product Name">
+        <input type="number" id="productQuantity" placeholder="Quantity">
+        <button onclick="addProduct()">Add Product</button>
+        
+        <h3>Products In Stock</h3>
+        <div class="product-list" id="inStock"></div>
+        
+        <h3>Out of Stock</h3>
+        <div class="product-list" id="outOfStock"></div>
+    </div>
+    
+    <script>
+        let inventory = [];
+
+        function addProduct() {
+            let name = document.getElementById('productName').value;
+            let quantity = parseInt(document.getElementById('productQuantity').value);
+            if (name && !isNaN(quantity)) {
+                inventory.push({ name, quantity });
+                updateInventory();
+            }
+        }
+
+        function updateInventory() {
+            let inStockDiv = document.getElementById('inStock');
+            let outOfStockDiv = document.getElementById('outOfStock');
+            inStockDiv.innerHTML = '';
+            outOfStockDiv.innerHTML = '';
+            
+            inventory.forEach((item, index) => {
+                let productDiv = document.createElement('div');
+                productDiv.className = 'product';
+                productDiv.innerHTML = `${item.name} (x${item.quantity}) <button onclick="removeProduct(${index})">Remove</button>`;
+                
+                if (item.quantity > 0) {
+                    inStockDiv.appendChild(productDiv);
+                } else {
+                    outOfStockDiv.appendChild(productDiv);
+                }
+            });
+        }
+
+        function removeProduct(index) {
+            inventory.splice(index, 1);
+            updateInventory();
+        }
+    </script>
+</body>
+</html>
